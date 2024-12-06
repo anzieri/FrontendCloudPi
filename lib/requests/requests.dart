@@ -8,20 +8,33 @@ import "package:remotefilesystem/login/loginlogic.dart";
 final String serverIP = dotenv.dotenv.env['SERVER_IP'] ?? 'localhost';
 final logger = Logger();
 
-const String baseURL = "nas.nimbuspicloud.org"; // Removed https:// prefix
-const String localURL = "frontendcloudpi.onrender.com"; // Removed https:// prefix
+const String baseURL = "nas.nimbuspicloud.org";
+const String apiScheme = "https";
+const String localURL = "frontendcloudpi.onrender.com";
+
+Map<String, String> getCommonHeaders(String? token) {
+  final headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Origin': 'https://$localURL',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept, Authorization',
+  };
+  
+  if (token != null) {
+    headers['Authorization'] = 'Bearer $token';
+  }
+  
+  return headers;
+}
 
 Future<dynamic> postCreateDir(name) async {
   final token = getToken();
   final url = Uri.https(baseURL, '/api/v1/directories/create', {
     'name': '$name',
   });
-  final headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer $token',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final headers = getCommonHeaders(token);
 
   try {
     final response = await http.post(
@@ -43,12 +56,7 @@ Future<dynamic> postCreateDir(name) async {
 Future<List<dynamic>> getDirList() async {
   final token = getToken();
   final url = Uri.https(baseURL, '/api/v1/directories/list');
-  final headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer $token',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final headers = getCommonHeaders(token);
 
   try {
     final response = await http.get(
@@ -71,15 +79,15 @@ Future<List<dynamic>> getDirList() async {
 
 Future<dynamic> postRegisterRequest(Map<String, dynamic> data) async {
   try {
-    final url = Uri.https(baseURL, '/api/v1/auth/register');
+    final url = Uri(
+      scheme: apiScheme,
+      host: baseURL,
+      path: '/api/v1/auth/register',
+    );
     final response = await http.post(
       url,
       body: jsonEncode(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Origin': 'https://$localURL',
-      },
+      headers: getCommonHeaders(null),
     );
 
     if (response.statusCode == 200) {
@@ -100,11 +108,7 @@ Future<dynamic> postLoginRequest(Map<String, dynamic> data) async {
     final response = await http.post(
       url,
       body: jsonEncode(data),
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Origin': 'https://$localURL',
-      },
+      headers: getCommonHeaders(null),
     );
 
     if (response.statusCode == 200) {
@@ -121,13 +125,11 @@ Future<dynamic> postLoginRequest(Map<String, dynamic> data) async {
 
 Future<bool> postUploadFile(html.File file, int directoryId) async {
   final token = getToken();
-  final url = Uri.https(baseURL, '/api/v1/files/upload');
-  final headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final url = Uri(
+    scheme: apiScheme,
+    host: baseURL,
+    path: '/api/v1/files/upload',
+  );
 
   try {
     final reader = html.FileReader();
@@ -135,7 +137,7 @@ Future<bool> postUploadFile(html.File file, int directoryId) async {
     await reader.onLoadEnd.first;
 
     var request = http.MultipartRequest('POST', url)
-      ..headers.addAll(headers)
+      ..headers.addAll(getCommonHeaders(token))
       ..fields['directoryId'] = directoryId.toString()
       ..files.add(http.MultipartFile.fromBytes(
         'file',
@@ -169,12 +171,7 @@ Future<bool> postDeleteDir(int directoryId) async {
   final token = getToken();
   final url = Uri.https(
       baseURL, '/api/v1/directories/delete', {'dirId': directoryId.toString()});
-  final headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final headers = getCommonHeaders(token);
 
   try {
     final response = await http.post(
@@ -205,12 +202,7 @@ Future<bool> postEditDirName(int directoryId, String newName) async {
     'dirId': directoryId.toString(),
     'newName': newName,
   });
-  final headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final headers = getCommonHeaders(token);
 
   try {
     final response = await http.post(
@@ -244,12 +236,7 @@ Future<bool> postCreateDirInDir(String subDirName, String parentDirPath) async {
     'name': subDirName,
     'parentDirPath': parentDirPath,
   });
-  final headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final headers = getCommonHeaders(token);
 
   try {
     final response = await http.post(
@@ -276,13 +263,12 @@ Future<bool> postDownloadFile(String fileName, String filePath) async {
   final path = '$filePath\\$fileName';
   logger.i('Downloading file: $path');
 
-  final url = Uri.https(baseURL, '/api/v1/files/download');
-  final headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final url = Uri(
+    scheme: apiScheme,
+    host: baseURL,
+    path: '/api/v1/files/download',
+  );
+  final headers = getCommonHeaders(token);
 
   try {
     final response = await http.post(
@@ -329,12 +315,7 @@ Future<bool> postDeleteFile(String fileName, String filePath) async {
     'filename': fileName,
     'filepath': filePath,
   });
-  final headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final headers = getCommonHeaders(token);
 
   try {
     final response = await http.post(
@@ -357,18 +338,16 @@ Future<bool> postDeleteFile(String fileName, String filePath) async {
 
 Future<List<dynamic>> getFileList() async {
   final token = getToken();
-  final url = Uri.https(baseURL, '/api/v1/files/list');
-  final headers = {
-    'Authorization': 'Bearer $token',
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-  };
+  final url = Uri(
+    scheme: apiScheme,
+    host: baseURL,
+    path: '/api/v1/files/list',
+  );
 
   try {
     final response = await http.get(
       url,
-      headers: headers,
+      headers: getCommonHeaders(token),
     );
 
     if (response.statusCode == 200) {
