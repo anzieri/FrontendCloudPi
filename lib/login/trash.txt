@@ -1,0 +1,56 @@
+import 'package:flutter/material.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
+
+class LoginPage extends StatelessWidget {
+  final String token; // Assume you have obtained this token after login
+
+  LoginPage(this.token);
+
+  @override
+  Widget build(BuildContext context) {
+    String role = getUserRole(token);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (role == 'admin') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AdminHomePage()),
+        );
+      } else if (role == 'client') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ClientHomePage()),
+        );
+      }
+    });
+
+    return Scaffold(
+      body: Center(child: CircularProgressIndicator()),
+    );
+  }
+
+  String getUserRole(String token) {
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
+    return decodedToken['role']; // Ensure 'role' matches your token structure
+  }
+}
+
+class AdminHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Admin Home')),
+      body: Center(child: Text('Welcome, Admin!')),
+    );
+  }
+}
+
+class ClientHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text('Client Home')),
+      body: Center(child: Text('Welcome, Client!')),
+    );
+  }
+}

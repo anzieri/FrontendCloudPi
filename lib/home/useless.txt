@@ -1,0 +1,99 @@
+return Scaffold(
+      body: Drawer(
+        shape: const BeveledRectangleBorder(),
+        child: ListView(
+          //padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+
+              child: Text('Drawer Header'),
+            ),
+            ListTile(
+              title: const Text('Home'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Details'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title: const Text('Metrics'),
+              onTap: () {
+                // Update the state of the app
+                // ...
+                // Then close the drawer
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+       // Container(
+      //   padding: EdgeInsets.fromLTRB(30, 0, 50, 0),
+      //   decoration: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(10),
+      //     color: const Color.fromARGB(237, 252, 252, 252),
+      //   ),
+      //   child: Text("Welcome $clientName",)),
+      // Container(
+      //   margin: EdgeInsets.fromLTRB(20, 20, 20, 0),
+      //   child: Buttons(
+      //       btnName: "All",
+      //       colour: Colors.transparent,
+      //       textcolour: Colors.black,
+      //       bordercolour: Colors.black,
+      //       containWidth: 100,
+      //       containHeight: 40,
+      //       radius: 20,
+      //       onPressed: () {}),
+      // ),
+      // Container(
+      //   margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
+      //   child: Buttons(
+      //       btnName: "Docs",
+      //       colour: Colors.transparent,
+      //       textcolour: const Color.fromARGB(255, 0, 164, 239),
+      //       bordercolour: const Color.fromARGB(255, 0, 164, 239),
+      //       containWidth: 100,
+      //       containHeight: 40,
+      //       radius: 20,
+      //       onPressed: () {}),
+      // ),
+      // Container(
+      //   margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
+      //   child: Buttons(
+      //       btnName: "Excel",
+      //       colour: Colors.transparent,
+      //       textcolour: const Color.fromARGB(255, 29, 111, 66),
+      //       bordercolour: const Color.fromARGB(255, 29, 111, 66),
+      //       containWidth: 120,
+      //       containHeight: 40,
+      //       radius: 20,
+      //       onPressed: () {}),
+      // ),
+      // Container(
+      //   margin: EdgeInsets.fromLTRB(0, 20, 20, 0),
+      //   child: Buttons(
+      //       btnName: "PowerPoint",
+      //       colour: Colors.transparent,
+      //       textcolour: const Color.fromARGB(255, 208, 68, 35),
+      //       bordercolour: const Color.fromARGB(255, 208, 68, 35),
+      //       containWidth: 160,
+      //       containHeight: 40,
+      //       radius: 20,
+      //       onPressed: () {}),
+      // ),
