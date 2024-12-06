@@ -1,5 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -9,18 +11,29 @@ import 'package:remotefilesystem/layout_body/layout_body.dart';
 import 'package:remotefilesystem/login/authprovider.dart';
 import 'package:remotefilesystem/login/login.dart';
 import 'package:remotefilesystem/register/register.dart';
+import 'package:http/http.dart' as http;
+import 'package:remotefilesystem/requests/requests.dart';
 
-void main() async {
-  await dotenv.load(fileName: "assets/.env");
+Future<void> main() async {
+  print('Starting app initialization...');
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Load environment variables
+  await dotenv.dotenv.load(fileName: "assets/.env")
+    .then((_) => print('ENV loaded, SERVER_IP: ${dotenv.dotenv.env['SERVER_IP']}'))
+    .catchError((error) {
+      print('Error loading .env file: $error');
+    });
+  
   usePathUrlStrategy();
   runApp(
     ChangeNotifierProvider(
       create: (context) => AuthProvider()..loadToken(),
-      child: 
-      const MyApp(),
+      child: const MyApp(),
     ),
-    );
+  );
 }
+
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _sectionNavigatorKey = GlobalKey<NavigatorState>();
