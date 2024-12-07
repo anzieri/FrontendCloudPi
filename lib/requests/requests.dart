@@ -18,12 +18,9 @@ Future<dynamic> postCreateDir(name) async {
   final headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
-    'Origin': 'https://$clientIP',
     'Accept': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-        'Origin, Content-Type, Accept, Authorization, X-Requested-With',
+
   };
 
   try {
@@ -45,14 +42,11 @@ Future<dynamic> postCreateDir(name) async {
 
 Future<List<dynamic>> getDirList() async {
   final token = getToken();
-   final url = Uri.parse("https://$serverIP/api/v1/directories/list");
+  final url = Uri.parse("https://$serverIP/api/v1/directories/list");
   final headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Accept, X-Requested-With, Origin',
     'Authorization': 'Bearer $token'
   };
 
@@ -67,12 +61,12 @@ Future<List<dynamic>> getDirList() async {
       return jsonResponse.map((dir) => dir as Map<String, dynamic>).toList();
     } else {
       logger.e('Request failed with status: ${response.statusCode}');
+      return [];
     }
   } catch (e) {
     logger.e('Error: $e');
-    return ['Error: $e'];
+    return [];
   }
-  return [];
 }
 
 Future<dynamic> postRegisterRequest(Map<String, dynamic> data) async {
@@ -83,11 +77,7 @@ Future<dynamic> postRegisterRequest(Map<String, dynamic> data) async {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Origin': 'https://$clientIP',
         'X-Requested-With': 'XMLHttpRequest',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers':
-            'Content-Type, Accept, X-Requested-With, Origin',
       },
     );
 
@@ -111,11 +101,7 @@ Future<dynamic> postLoginRequest(Map<String, dynamic> data) async {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Origin': 'https://$clientIP',
         'X-Requested-With': 'XMLHttpRequest',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers':
-            'Content-Type, Accept, X-Requested-With, Origin',
       },
     );
 
@@ -138,11 +124,8 @@ Future<bool> postUploadFile(html.File file, int directoryId) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json, */*',
-    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
+
   };
 
   try {
@@ -189,11 +172,8 @@ Future<bool> postDeleteDir(int directoryId) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
+
   };
 
   try {
@@ -227,11 +207,7 @@ Future<bool> postEditDirName(int directoryId, String newName) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -268,11 +244,8 @@ Future<bool> postCreateDirInDir(String subDirName, String parentDirPath) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
+
   };
 
   try {
@@ -305,11 +278,7 @@ Future<bool> postDownloadFile(String fileName, String filePath) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -359,11 +328,7 @@ Future<bool> postDeleteFile(String fileName, String filePath) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -392,11 +357,8 @@ Future<List<dynamic>> getFileList() async {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
     'Accept': 'application/json',
-    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
+
   };
 
   try {
