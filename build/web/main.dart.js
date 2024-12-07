@@ -27687,7 +27687,7 @@ var $async$awk=A.K(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:p=4
 l=t.N
 s=7
-return A.U(A.rN(A.d2($.a_X()+"/api/v1/auth/register"),B.an.yI(a,null),A.az(["Content-Type","application/json","Accept","application/json","Origin","https://"+$.jQ(),"X-Requested-With","XMLHttpRequest","Access-Control-Allow-Methods","GET, POST, OPTIONS","Access-Control-Allow-Headers",u.v],l,l)),$async$awk)
+return A.U(A.rN(A.d2("https://"+$.a_X()+"/api/v1/auth/register"),B.an.yI(a,null),A.az(["Content-Type","application/json","Accept","application/json","Origin","https://"+$.jQ(),"X-Requested-With","XMLHttpRequest","Access-Control-Allow-Methods","GET, POST, OPTIONS","Access-Control-Allow-Headers",u.v],l,l)),$async$awk)
 case 7:n=c
 if(n.b===200){$.cv().iL("Request successful")
 l=n

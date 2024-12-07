@@ -82,7 +82,7 @@ Future<List<dynamic>> getDirList() async {
 Future<dynamic> postRegisterRequest(Map<String, dynamic> data) async {
   try {
     final response = await http.post(
-      Uri.parse("$serverIP/api/v1/auth/register"),
+      Uri.parse("https://$serverIP/api/v1/auth/register"),
       body: jsonEncode(data),
       headers: {
         'Content-Type': 'application/json',
