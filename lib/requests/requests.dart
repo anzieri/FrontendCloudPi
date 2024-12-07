@@ -7,7 +7,9 @@ import "package:remotefilesystem/login/loginlogic.dart";
 
 final String serverIP = dotenv.dotenv.env['SERVER_IP'] ?? 'localhost';
 final String clientIP = dotenv.dotenv.env['CLIENT_IP'] ?? 'localhost';
+
 final logger = Logger();
+
 
 Future<dynamic> postCreateDir(name) async {
   final token = getToken();
