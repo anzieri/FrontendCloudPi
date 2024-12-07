@@ -1,9 +1,7 @@
 import "package:flutter/material.dart";
-import "package:remotefilesystem/buttons/buttons.dart";
 import "package:remotefilesystem/home/threedots.dart";
 import "package:remotefilesystem/login/loginlogic.dart";
 import "package:remotefilesystem/requests/requests.dart";
-import "package:remotefilesystem/textfields/textfields.dart";
 import "package:remotefilesystem/home/logichome.dart";
 
 class Divide extends StatefulWidget {

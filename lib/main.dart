@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
 import 'package:flutter_web_plugins/url_strategy.dart';
@@ -11,8 +9,7 @@ import 'package:remotefilesystem/layout_body/layout_body.dart';
 import 'package:remotefilesystem/login/authprovider.dart';
 import 'package:remotefilesystem/login/login.dart';
 import 'package:remotefilesystem/register/register.dart';
-import 'package:http/http.dart' as http;
-import 'package:remotefilesystem/requests/requests.dart';
+
 
 Future<void> main() async {
   print('Starting app initialization...');
@@ -70,21 +67,7 @@ final _router = GoRouter(
             ),
      
             ),
-            
-            // GoRoute(
-            // name: 'MainHome',
-            // path: '/piedrive',
-            // builder: (context, state) => const Pagey(),
-            // ),
 
-            // GoRoute(
-            // name: 'register',
-            // path: '/register/:role',
-            // builder:(context, state) {
-            //   final role = state.pathParameters['role']!;
-            //   return RegisterUI(role: role);
-            // },
-            // ),
         ]),
         
       ],
@@ -105,18 +88,6 @@ final _router = GoRouter(
                 child: RegisterUI(role: role,),
               );
             },),
-    // GoRoute(
-    //   name: 'admin',
-    //   path: '/admin',
-    //   builder: (context, state) => const AdminHomePage(),
-    //   redirect: (context, state) {
-    //     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    //     if (!authProvider.isAuthenticated || authProvider.role != 'ADMIN') {
-    //       return '/login';
-    //     }
-    //     return null;
-    //   },
-    // ),
     GoRoute(
       name: 'MainHome',
       path: '/piedrive',
@@ -159,19 +130,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-// class MyHomePage extends StatelessWidget {
-//   const MyHomePage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp.router(
-//       color: Colors.white,
-//       debugShowCheckedModeBanner: false,
-//       routerConfig: _router,
-//     );
-//   }
-// }
 
 
 CustomTransitionPage<void> buildPageWithoutAnimation({

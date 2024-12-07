@@ -1,7 +1,5 @@
-// grid.dart
 import "package:flutter/material.dart";
 import 'dart:html' as html;
-import "package:remotefilesystem/buttons/buttons.dart";
 import "package:remotefilesystem/buttons/navbuttons.dart";
 import "package:remotefilesystem/home/logichome.dart";
 import "package:remotefilesystem/home/threedots.dart";
@@ -15,7 +13,8 @@ class GridDirectorySelect extends StatefulWidget {
 }
 
 class _GridDirectorySelectState extends State<GridDirectorySelect> {
-  final String rootPath = 'C:\\Users\\AMARA NYANZI\\Downloads\\uploads';
+  // Update root path to Linux style
+  final String rootPath = '/mnt/drive1';
   late String currentPath;
   String? currentDirName;
   String? currentDirPath;
@@ -35,16 +34,17 @@ class _GridDirectorySelectState extends State<GridDirectorySelect> {
     pathSegments = [getDirectoryNameFromPath(rootPath)];
   }
 
+  // Update path handling methods
   String getDirectoryNameFromPath(String fullPath) {
-    return fullPath.split('\\').last;
+    return fullPath.split('/').last;
   }
 
   String getParentPath(String fullPath) {
     if (fullPath == rootPath || !fullPath.startsWith(rootPath)) {
       return rootPath;
     }
-    final segments = fullPath.split('\\');
-    return segments.sublist(0, segments.length - 1).join('\\');
+    final segments = fullPath.split('/');
+    return segments.sublist(0, segments.length - 1).join('/');
   }
 
   void navigateToDirectory(String fullPath) {
@@ -54,10 +54,10 @@ class _GridDirectorySelectState extends State<GridDirectorySelect> {
       currentPath = fullPath;
       pathSegments = fullPath
           .substring(rootPath.length)
-          .split('\\')
+          .split('/')
           .where((s) => s.isNotEmpty)
           .toList();
-      pathSegments.insert(0, 'uploads');
+      pathSegments.insert(0, 'drive1');
     });
   }
 
@@ -376,8 +376,8 @@ class _GridDirectorySelectState extends State<GridDirectorySelect> {
                       radius: 20,
                       onPressed: () {
                         final newPath = rootPath +
-                            '\\' +
-                            pathSegments.sublist(1, i + 1).join('\\');
+                            '/' +
+                            pathSegments.sublist(1, i + 1).join('/');
                         navigateToDirectory(newPath);
                       },
                     )
@@ -422,8 +422,8 @@ class _GridDirectorySelectState extends State<GridDirectorySelect> {
                     final parentPath = getParentPath(dirPath);
                     print(
                         'Comparing dir: $dirPath with parent: $parentPath'); // Debug directory paths
-                    return parentPath.toLowerCase() ==
-                        currentPath.toLowerCase();
+                    return parentPath ==
+                        currentPath; // Linux paths are case-sensitive
                   }).toList();
 
                   List<Widget> gridItems = [];

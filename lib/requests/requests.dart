@@ -8,33 +8,23 @@ import "package:remotefilesystem/login/loginlogic.dart";
 final String serverIP = dotenv.dotenv.env['SERVER_IP'] ?? 'localhost';
 final logger = Logger();
 
-const String baseURL = "nas.nimbuspicloud.org";
-const String apiScheme = "https";
-const String localURL = "frontendcloudpi.onrender.com";
-
-Map<String, String> getCommonHeaders(String? token) {
-  final headers = {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Origin': 'https://$localURL',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Origin, Content-Type, Accept, Authorization',
-  };
-  
-  if (token != null) {
-    headers['Authorization'] = 'Bearer $token';
-  }
-  
-  return headers;
-}
-
 Future<dynamic> postCreateDir(name) async {
   final token = getToken();
-  final url = Uri.https(baseURL, '/api/v1/directories/create', {
+  //'Access-Control-Allow-Origin': '*',
+
+  final url = Uri.https(serverIP, '/api/v1/directories/create', {
     'name': '$name',
   });
-  final headers = getCommonHeaders(token);
+  final headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
+    'Origin': 'https://$serverIP',
+    'Accept': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Origin, Content-Type, Accept, Authorization',
+  };
 
   try {
     final response = await http.post(
@@ -55,8 +45,17 @@ Future<dynamic> postCreateDir(name) async {
 
 Future<List<dynamic>> getDirList() async {
   final token = getToken();
-  final url = Uri.https(baseURL, '/api/v1/directories/list');
-  final headers = getCommonHeaders(token);
+  final url = Uri.https(serverIP, '/api/v1/directories/list');
+  final headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
+    'Accept': 'application/json',
+    'Origin': 'https://$serverIP',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST',
+    'Access-Control-Allow-Headers':
+        'Origin, Content-Type, Accept, Authorization',
+  };
 
   try {
     final response = await http.get(
@@ -79,15 +78,18 @@ Future<List<dynamic>> getDirList() async {
 
 Future<dynamic> postRegisterRequest(Map<String, dynamic> data) async {
   try {
-    final url = Uri(
-      scheme: apiScheme,
-      host: baseURL,
-      path: '/api/v1/auth/register',
-    );
     final response = await http.post(
-      url,
+      Uri.parse("$serverIP/api/v1/auth/register"),
       body: jsonEncode(data),
-      headers: getCommonHeaders(null),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Origin': 'https://$serverIP',
+        'X-Requested-With': 'XMLHttpRequest',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers':
+            'Content-Type, Accept, X-Requested-With',
+      },
     );
 
     if (response.statusCode == 200) {
@@ -104,11 +106,18 @@ Future<dynamic> postRegisterRequest(Map<String, dynamic> data) async {
 
 Future<dynamic> postLoginRequest(Map<String, dynamic> data) async {
   try {
-    final url = Uri.https(baseURL, '/api/v1/auth/authenticate');
     final response = await http.post(
-      url,
+      Uri.parse("https://$serverIP/api/v1/auth/authenticate"),
       body: jsonEncode(data),
-      headers: getCommonHeaders(null),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Origin': 'https://$serverIP',
+        'X-Requested-With': 'XMLHttpRequest',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers':
+            'Content-Type, Accept, X-Requested-With',
+      },
     );
 
     if (response.statusCode == 200) {
@@ -125,11 +134,17 @@ Future<dynamic> postLoginRequest(Map<String, dynamic> data) async {
 
 Future<bool> postUploadFile(html.File file, int directoryId) async {
   final token = getToken();
-  final url = Uri(
-    scheme: apiScheme,
-    host: baseURL,
-    path: '/api/v1/files/upload',
-  );
+  final url = Uri.parse('https://nas.nimbuspicloud.org/api/v1/files/upload');
+  final headers = {
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json, */*',
+    'Origin': 'https://$serverIP',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Content-Type, Accept, Authorization, X-Requested-With',
+  };
 
   try {
     final reader = html.FileReader();
@@ -137,7 +152,7 @@ Future<bool> postUploadFile(html.File file, int directoryId) async {
     await reader.onLoadEnd.first;
 
     var request = http.MultipartRequest('POST', url)
-      ..headers.addAll(getCommonHeaders(token))
+      ..headers.addAll(headers)
       ..fields['directoryId'] = directoryId.toString()
       ..files.add(http.MultipartFile.fromBytes(
         'file',
@@ -169,9 +184,18 @@ Future<bool> postUploadFile(html.File file, int directoryId) async {
 
 Future<bool> postDeleteDir(int directoryId) async {
   final token = getToken();
-  final url = Uri.https(
-      baseURL, '/api/v1/directories/delete', {'dirId': directoryId.toString()});
-  final headers = getCommonHeaders(token);
+  final url = Uri.parse(
+      'https://nas.nimbuspicloud.org/api/v1/directories/delete?dirId=$directoryId');
+  final headers = {
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Origin': 'https://$serverIP',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Content-Type, Accept, Authorization, X-Requested-With',
+  };
 
   try {
     final response = await http.post(
@@ -198,11 +222,21 @@ Future<bool> postDeleteDir(int directoryId) async {
 
 Future<bool> postEditDirName(int directoryId, String newName) async {
   final token = getToken();
-  final url = Uri.https(baseURL, '/api/v1/directories/editName', {
+  final url =
+      Uri.https('nas.nimbuspicloud.org', '/api/v1/directories/editName', {
     'dirId': directoryId.toString(),
     'newName': newName,
   });
-  final headers = getCommonHeaders(token);
+  final headers = {
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Origin': 'https://$serverIP',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Content-Type, Accept, Authorization, X-Requested-With',
+  };
 
   try {
     final response = await http.post(
@@ -232,11 +266,18 @@ Future<bool> postEditDirName(int directoryId, String newName) async {
 
 Future<bool> postCreateDirInDir(String subDirName, String parentDirPath) async {
   final token = getToken();
-  final url = Uri.https(baseURL, '/api/v1/directories/createDirInDir', {
-    'name': subDirName,
-    'parentDirPath': parentDirPath,
-  });
-  final headers = getCommonHeaders(token);
+  final url = Uri.parse(
+      'https://nas.nimbuspicloud.org/api/v1/directories/createDirInDir?name=$subDirName&parentDirPath=$parentDirPath');
+  final headers = {
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Origin': 'https://$serverIP',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Content-Type, Accept, Authorization, X-Requested-With',
+  };
 
   try {
     final response = await http.post(
@@ -263,12 +304,17 @@ Future<bool> postDownloadFile(String fileName, String filePath) async {
   final path = '$filePath\\$fileName';
   logger.i('Downloading file: $path');
 
-  final url = Uri(
-    scheme: apiScheme,
-    host: baseURL,
-    path: '/api/v1/files/download',
-  );
-  final headers = getCommonHeaders(token);
+  final url = Uri.parse('https://nas.nimbuspicloud.org/api/v1/files/download');
+  final headers = {
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Origin': 'https://$serverIP',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Content-Type, Accept, Authorization, X-Requested-With',
+  };
 
   try {
     final response = await http.post(
@@ -311,11 +357,18 @@ Future<bool> postDownloadFile(String fileName, String filePath) async {
 
 Future<bool> postDeleteFile(String fileName, String filePath) async {
   final token = getToken();
-  final url = Uri.https(baseURL, '/api/v1/files/delete', {
-    'filename': fileName,
-    'filepath': filePath,
-  });
-  final headers = getCommonHeaders(token);
+  final url = Uri.parse(
+      'https://nas.nimbuspicloud.org/api/v1/files/delete?filename=$fileName&filepath=$filePath');
+  final headers = {
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    'Origin': 'https://$serverIP',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Content-Type, Accept, Authorization, X-Requested-With',
+  };
 
   try {
     final response = await http.post(
@@ -338,16 +391,22 @@ Future<bool> postDeleteFile(String fileName, String filePath) async {
 
 Future<List<dynamic>> getFileList() async {
   final token = getToken();
-  final url = Uri(
-    scheme: apiScheme,
-    host: baseURL,
-    path: '/api/v1/files/list',
-  );
+  final url = Uri.https('nas.nimbuspicloud.org', '/api/v1/files/list');
+  final headers = {
+    'Content-Type': 'application/json',
+    'Authorization': 'Bearer $token',
+    'Accept': 'application/json',
+    'Origin': 'https://$serverIP',
+    'X-Requested-With': 'XMLHttpRequest',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers':
+        'Content-Type, Accept, Authorization, X-Requested-With',
+  };
 
   try {
     final response = await http.get(
       url,
-      headers: getCommonHeaders(token),
+      headers: headers,
     );
 
     if (response.statusCode == 200) {

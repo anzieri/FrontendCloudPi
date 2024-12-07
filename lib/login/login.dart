@@ -1,8 +1,6 @@
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
-import 'package:provider/provider.dart';
 import "package:remotefilesystem/buttons/buttons.dart";
-import "package:remotefilesystem/login/authprovider.dart";
 import "package:remotefilesystem/login/loginlogic.dart";
 import "package:remotefilesystem/requests/requests.dart";
 import "package:remotefilesystem/textfields/textfields.dart";
