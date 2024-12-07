@@ -6,6 +6,7 @@ import 'package:logger/logger.dart' show Logger;
 import "package:remotefilesystem/login/loginlogic.dart";
 
 final String serverIP = dotenv.dotenv.env['SERVER_IP'] ?? 'localhost';
+final String clientIP = dotenv.dotenv.env['CLIENT_IP'] ?? 'localhost';
 final logger = Logger();
 
 Future<dynamic> postCreateDir(name) async {
@@ -18,7 +19,7 @@ Future<dynamic> postCreateDir(name) async {
   final headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'Accept': 'application/json',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -50,7 +51,7 @@ Future<List<dynamic>> getDirList() async {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
     'Accept': 'application/json',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST',
     'Access-Control-Allow-Headers':
@@ -84,11 +85,11 @@ Future<dynamic> postRegisterRequest(Map<String, dynamic> data) async {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Origin': 'https://$serverIP',
+        'Origin': 'https://$clientIP',
         'X-Requested-With': 'XMLHttpRequest',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers':
-            'Content-Type, Accept, X-Requested-With',
+            'Content-Type, Accept, X-Requested-With, Origin',
       },
     );
 
@@ -112,11 +113,11 @@ Future<dynamic> postLoginRequest(Map<String, dynamic> data) async {
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Origin': 'https://$serverIP',
+        'Origin': 'https://$clientIP',
         'X-Requested-With': 'XMLHttpRequest',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers':
-            'Content-Type, Accept, X-Requested-With',
+            'Content-Type, Accept, X-Requested-With, Origin',
       },
     );
 
@@ -139,11 +140,11 @@ Future<bool> postUploadFile(html.File file, int directoryId) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json, */*',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With',
+        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -190,11 +191,11 @@ Future<bool> postDeleteDir(int directoryId) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With',
+        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -231,11 +232,11 @@ Future<bool> postEditDirName(int directoryId, String newName) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With',
+        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -272,11 +273,11 @@ Future<bool> postCreateDirInDir(String subDirName, String parentDirPath) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With',
+        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -309,11 +310,11 @@ Future<bool> postDownloadFile(String fileName, String filePath) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With',
+        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -363,11 +364,11 @@ Future<bool> postDeleteFile(String fileName, String filePath) async {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
     'Accept': 'application/json',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With',
+        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
@@ -396,11 +397,11 @@ Future<List<dynamic>> getFileList() async {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
     'Accept': 'application/json',
-    'Origin': 'https://$serverIP',
+    'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Content-Type, Accept, Authorization, X-Requested-With',
+        'Content-Type, Accept, Authorization, X-Requested-With, Origin',
   };
 
   try {
