@@ -14,9 +14,7 @@ Future<dynamic> postCreateDir(name) async {
   final token = getToken();
   //'Access-Control-Allow-Origin': '*',
 
-  final url = Uri.https(serverIP, '/api/v1/directories/create', {
-    'name': '$name',
-  });
+  final url = Uri.parse('https://$serverIP/api/v1/directories/create?name=$name');
   final headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer $token',
@@ -47,16 +45,15 @@ Future<dynamic> postCreateDir(name) async {
 
 Future<List<dynamic>> getDirList() async {
   final token = getToken();
-  final url = Uri.https(serverIP, '/api/v1/directories/list');
+   final url = Uri.parse("https://$serverIP/api/v1/directories/list");
   final headers = {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer $token',
     'Accept': 'application/json',
     'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-    'Access-Control-Allow-Headers':
-            'Content-Type, Accept, X-Requested-With, Authorization, Origin',
+    'Access-Control-Allow-Headers': 'Content-Type, Accept, X-Requested-With, Origin',
+    'Authorization': 'Bearer $token'
   };
 
   try {
@@ -136,7 +133,7 @@ Future<dynamic> postLoginRequest(Map<String, dynamic> data) async {
 
 Future<bool> postUploadFile(html.File file, int directoryId) async {
   final token = getToken();
-  final url = Uri.parse('https://nas.nimbuspicloud.org/api/v1/files/upload');
+  final url = Uri.parse('https://$serverIP/api/v1/files/upload');
   final headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
@@ -187,7 +184,7 @@ Future<bool> postUploadFile(html.File file, int directoryId) async {
 Future<bool> postDeleteDir(int directoryId) async {
   final token = getToken();
   final url = Uri.parse(
-      'https://nas.nimbuspicloud.org/api/v1/directories/delete?dirId=$directoryId');
+      'https://$serverIP/api/v1/directories/delete?dirId=$directoryId');
   final headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
@@ -225,10 +222,7 @@ Future<bool> postDeleteDir(int directoryId) async {
 Future<bool> postEditDirName(int directoryId, String newName) async {
   final token = getToken();
   final url =
-      Uri.https('nas.nimbuspicloud.org', '/api/v1/directories/editName', {
-    'dirId': directoryId.toString(),
-    'newName': newName,
-  });
+      Uri.parse('https://$serverIP/api/v1/directories/editName?dirId=$directoryId&newName=$newName');
   final headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
@@ -269,7 +263,7 @@ Future<bool> postEditDirName(int directoryId, String newName) async {
 Future<bool> postCreateDirInDir(String subDirName, String parentDirPath) async {
   final token = getToken();
   final url = Uri.parse(
-      'https://nas.nimbuspicloud.org/api/v1/directories/createDirInDir?name=$subDirName&parentDirPath=$parentDirPath');
+      'https://$serverIP/api/v1/directories/createDirInDir?name=$subDirName&parentDirPath=$parentDirPath');
   final headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
@@ -303,10 +297,10 @@ Future<bool> postCreateDirInDir(String subDirName, String parentDirPath) async {
 
 Future<bool> postDownloadFile(String fileName, String filePath) async {
   final token = getToken();
-  final path = '$filePath\\$fileName';
+  final path = '$filePath/$fileName';
   logger.i('Downloading file: $path');
 
-  final url = Uri.parse('https://nas.nimbuspicloud.org/api/v1/files/download');
+  final url = Uri.parse('https://$serverIP/api/v1/files/download');
   final headers = {
     'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
