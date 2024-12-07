@@ -10,7 +10,6 @@ final String clientIP = dotenv.dotenv.env['CLIENT_IP'] ?? 'localhost';
 
 final logger = Logger();
 
-
 Future<dynamic> postCreateDir(name) async {
   final token = getToken();
   //'Access-Control-Allow-Origin': '*',
@@ -55,9 +54,9 @@ Future<List<dynamic>> getDirList() async {
     'Accept': 'application/json',
     'Origin': 'https://$clientIP',
     'X-Requested-With': 'XMLHttpRequest',
-    'Access-Control-Allow-Methods': 'GET, POST',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Origin, Content-Type, Accept, Authorization, X-Requested-With',
+            'Content-Type, Accept, X-Requested-With, Authorization, Origin',
   };
 
   try {
