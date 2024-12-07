@@ -26,7 +26,7 @@ Future<dynamic> postCreateDir(name) async {
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers':
-        'Origin, Content-Type, Accept, Authorization',
+        'Origin, Content-Type, Accept, Authorization, X-Requested-With',
   };
 
   try {
@@ -57,7 +57,7 @@ Future<List<dynamic>> getDirList() async {
     'X-Requested-With': 'XMLHttpRequest',
     'Access-Control-Allow-Methods': 'GET, POST',
     'Access-Control-Allow-Headers':
-        'Origin, Content-Type, Accept, Authorization',
+        'Origin, Content-Type, Accept, Authorization, X-Requested-With',
   };
 
   try {
