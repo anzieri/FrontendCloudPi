@@ -1,16 +1,16 @@
-# remotefilesystem
+# Remote filesystem(cloud)📁
 
-A new Flutter project.
+This project is divided into 2 separate parts that use different technologies and frameworks. This repository houses the frontend of my personal cloud, a powerful and user-friendly web application crafted with Flutter. The backend of this system is powered by Spring Boot, providing robust and scalable services. With the frontend being the emphasis in this repo, the flutter web application was meant for managing directories and files stored remotely on a Raspberry Pi NAS and hosted on render.
 
-## Getting Started
+## Key Design and Functionality
 
-This project is a starting point for a Flutter application.
+This project harnesses the power of a tree of widgets within the flutter framework. Using several useful packages like the "GoRouter" dart package, routing and navigation between web pages was made possible. 
 
-A few resources to get you started if this is your first Flutter project:
+![image](https://github.com/user-attachments/assets/1e20635c-6a89-40c7-824b-b2a1c28d51d9)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+More to be discussed later on. Stay Tuned!
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+
+
+
